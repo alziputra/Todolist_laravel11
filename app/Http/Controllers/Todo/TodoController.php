@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Todo;
 
 use App\Http\Controllers\Controller;
+use App\Models\Todo;
 use Illuminate\Http\Request;
 use Termwind\Components\Dd;
 
@@ -34,11 +35,20 @@ class TodoController extends Controller
     // buat validasi inputan
     $request->validate([
       'task' => 'required|min:5|max:30',
-    ],[
+    ], [
       'task.required' => 'Task tidak boleh kosong',
       'task.min' => 'Task minimal 5 karakter',
       'task.max' => 'Task maksimal 30 karakter',
     ]);
+
+    // buat variabel untuk menampung data
+    $data = [
+      'task' => $request->input('task')
+    ];
+    // simpan data ke database
+    Todo::create($data);
+    // kembalikan ke halaman todo dengan pesan sukses
+    return redirect('/todo')->with('success', 'Data berhasil ditambahkan');
   }
 
   /**
