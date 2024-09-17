@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Todo;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Termwind\Components\Dd;
 
 class TodoController extends Controller
 {
@@ -12,7 +13,7 @@ class TodoController extends Controller
    */
   public function index()
   {
-    //
+    return view('todo.app');
   }
 
   /**
@@ -28,7 +29,8 @@ class TodoController extends Controller
    */
   public function store(Request $request)
   {
-    //
+    // dd mengeluarkan data dari form
+    dd($request);
   }
 
   /**

@@ -23,6 +23,7 @@
       <div>
         <!-- 02. Form input data -->
         <form id="todo-form" action="" method="post">
+          @csrf
           <div>
             <input type="text" name="task" id="todo-input" placeholder="Tambah task baru" required>
             <button type="submit">Simpan</button>
