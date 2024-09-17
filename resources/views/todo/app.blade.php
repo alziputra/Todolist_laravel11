@@ -14,7 +14,7 @@
   <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <a class="navbar-item" href="#">
-        <span class="has-text-white">Simple To Do List</span>
+        <span class="has-text-weight-semibold">Simple To Do List</span>
       </a>
     </div>
   </nav>
@@ -68,56 +68,59 @@
 
       <ul id="todo-list" class="mt-5">
         <!-- 04. Display Data -->
-        <li class="box is-flex is-justify-content-space-between is-align-items-center">
-          <span class="task-text">Coding</span>
-          <input type="text" class="input edit-input is-hidden" value="Coding">
-          <div class="buttons">
-            <button class="button is-danger is-small">✕</button>
-            <button class="button is-warning is-small" onclick="toggleUpdateForm()">✎</button>
-          </div>
-        </li>
+        @foreach ($datatabel as $item)
+          <li class="mb-1 is-flex is-justify-content-space-between is-align-items-center">
+            <span class="task-text">{{ $item->task }}</span>
+            <input type="text" class="input edit-input is-hidden" value="{{ $item->task }}">
+            <div class="buttons">
+              <button class="button is-danger is-small">✕</button>
+              <!-- $loop->index adalah variabel bawaan dari Blade yang menyediakan indeks dari elemen saat ini dalam loop. -->
+              <button class="button is-warning is-small" onclick="toggleUpdateForm({{ $loop->index }})">✎</button>
+            </div>
+          </li>
 
-        <!-- 05. Update Data (Initially Hidden) -->
-        <li class="box is-hidden" id="update-form">
-          <form action="" method="POST">
-            <div class="field is-grouped">
-              <div class="control is-expanded">
-                <input type="text" name="task" class="input" value="Coding">
+          <!-- 05. Update Data (Initially Hidden) -->
+          <li class="box is-hidden" id="update-form-{{ $loop->index }}">
+            <form action="" method="POST">
+              <div class="field is-grouped">
+                <div class="control is-expanded">
+                  <input type="text" name="task" class="input" value="{{ $item->task }}">
+                </div>
+                <div class="control">
+                  <button type="button" class="button is-primary">Update</button>
+                </div>
               </div>
-              <div class="control">
-                <button type="button" class="button is-primary">Update</button>
+              <div class="is-flex is-align-items-center">
+                <div class="control mr-2">
+                  <label class="radio">
+                    <input type="radio" value="1" name="is_done">
+                    Selesai
+                  </label>
+                </div>
+                <div class="control">
+                  <label class="radio">
+                    <input type="radio" value="0" name="is_done">
+                    Belum
+                  </label>
+                </div>
               </div>
-            </div>
-            <div class="field mt-3">
-              <div class="control">
-                <label class="radio">
-                  <input type="radio" value="1" name="is_done">
-                  Selesai
-                </label>
-              </div>
-              <div class="control">
-                <label class="radio">
-                  <input type="radio" value="0" name="is_done">
-                  Belum
-                </label>
-              </div>
-            </div>
-          </form>
-        </li>
+
+            </form>
+          </li>
+        @endforeach
       </ul>
-    </div>
-  </div>
 
-  <script>
-    function toggleUpdateForm() {
-      var updateForm = document.getElementById('update-form');
-      if (updateForm.classList.contains('is-hidden')) {
-        updateForm.classList.remove('is-hidden');
-      } else {
-        updateForm.classList.add('is-hidden');
-      }
-    }
-  </script>
+      <script>
+        function toggleUpdateForm(index) {
+          // Mengakses elemen dengan id 'update-form-' yang diikuti oleh indeks dari loop Blade
+          var updateForm = document.getElementById('update-form-' + index);
+          if (updateForm.classList.contains('is-hidden')) {
+            updateForm.classList.remove('is-hidden'); // Menampilkan form jika sebelumnya disembunyikan
+          } else {
+            updateForm.classList.add('is-hidden'); // Menyembunyikan form jika sebelumnya ditampilkan
+          }
+        }
+      </script>
 
 </body>
 

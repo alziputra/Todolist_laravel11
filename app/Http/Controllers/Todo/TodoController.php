@@ -14,7 +14,11 @@ class TodoController extends Controller
    */
   public function index()
   {
-    return view('todo.app');
+    // ambil data dari model Todo
+    $data = Todo::orderBy('task', 'asc')->get();
+
+    // kirim data ke view todo.app
+    return view('todo.app',['datatabel' => $data]);
   }
 
   /**
