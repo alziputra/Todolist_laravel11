@@ -12,7 +12,7 @@ Route::get('/', function () {
 // });
 
 // buat route baru untuk todo
-Route::get('/todo',[TodoController::class, 'index']);
+Route::get('/todo',[TodoController::class, 'index'])->name('todo');
 
 // store data digunakan untuk menyimpan data
-Route::post('/todo',[TodoController::class, 'store']);
+Route::post('/todo',[TodoController::class, 'store'])->name('todo.post');

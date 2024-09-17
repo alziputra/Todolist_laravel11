@@ -48,7 +48,7 @@ class TodoController extends Controller
     // simpan data ke database
     Todo::create($data);
     // kembalikan ke halaman todo dengan pesan sukses
-    return redirect('/todo')->with('success', 'Data berhasil ditambahkan');
+    return redirect()->route('todo')->with('success', 'Data berhasil ditambahkan');
   }
 
   /**

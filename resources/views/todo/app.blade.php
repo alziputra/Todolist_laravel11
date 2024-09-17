@@ -41,7 +41,7 @@
         </div>
       @endif
 
-      <form id="todo-form" action="{{ url('/todo') }}" method="post">
+      <form id="todo-form" action="{{ route('todo.post') }}" method="post">
         @csrf
         <div class="field has-addons">
           <div class="control is-expanded">
