@@ -22,10 +22,20 @@
     <div>
       <div>
         <!-- 02. Form input data -->
-        <form id="todo-form" action="" method="post">
+        @if ($errors->any())
+          <div>
+            <ul>
+              @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+              @endforeach
+            </ul>
+          </div>
+        @endif
+        <form id="todo-form" action="{{ url('/todo') }}" method="post">
           @csrf
           <div>
-            <input type="text" name="task" id="todo-input" placeholder="Tambah task baru" required>
+            <input type="text" name="task" id="todo-input" placeholder="Tambah task baru" required
+              value="{{ old('task') }}">
             <button type="submit">Simpan</button>
           </div>
         </form>

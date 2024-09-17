@@ -30,7 +30,15 @@ class TodoController extends Controller
   public function store(Request $request)
   {
     // dd mengeluarkan data dari form
-    dd($request);
+    // dd($request);
+    // buat validasi inputan
+    $request->validate([
+      'task' => 'required|min:5|max:30',
+    ],[
+      'task.required' => 'Task tidak boleh kosong',
+      'task.min' => 'Task minimal 5 karakter',
+      'task.max' => 'Task maksimal 30 karakter',
+    ]);
   }
 
   /**
