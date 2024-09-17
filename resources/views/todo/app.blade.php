@@ -70,7 +70,11 @@
         <!-- 04. Display Data -->
         @foreach ($datatabel as $item)
           <li class="mb-1 is-flex is-justify-content-space-between is-align-items-center">
-            <span class="task-text">{{ $item->task }}</span>
+            {{-- menampilkan status task --}}
+            <span class="task-text">
+              {{ $item->is_done == '1' ? '✅' : '❌' }}
+              {!! $item->is_done == '1' ? $item->task : '<del>' . $item->task . '</del>' !!}
+            </span>
             <input type="text" class="input edit-input is-hidden" value="{{ $item->task }}">
             <div class="buttons">
               <button class="button is-danger is-small">✕</button>
