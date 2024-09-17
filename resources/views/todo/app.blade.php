@@ -81,25 +81,28 @@
 
           <!-- 05. Update Data (Initially Hidden) -->
           <li class="box is-hidden" id="update-form-{{ $loop->index }}">
-            <form action="" method="POST">
+            <form action="{{ route('todo.update', ['id' => $item->id]) }}" method="POST">
+              @csrf
+              {{-- gunakan method PUT bawaan Laravel untuk mengirimkan data ke route update --}}
+              @method('PUT')
               <div class="field is-grouped">
                 <div class="control is-expanded">
                   <input type="text" name="task" class="input" value="{{ $item->task }}">
                 </div>
                 <div class="control">
-                  <button type="button" class="button is-primary">Update</button>
+                  <button type="submit" class="button is-primary">Update</button>
                 </div>
               </div>
               <div class="is-flex is-align-items-center">
                 <div class="control mr-2">
                   <label class="radio">
-                    <input type="radio" value="1" name="is_done">
+                    <input type="radio" value="1" name="is_done" {{ $item->is_done == '1' ? 'checked' : '' }}>
                     Selesai
                   </label>
                 </div>
                 <div class="control">
                   <label class="radio">
-                    <input type="radio" value="0" name="is_done">
+                    <input type="radio" value="0" name="is_done" {{ $item->is_done == '0' ? 'checked' : '' }}>
                     Belum
                   </label>
                 </div>

@@ -16,3 +16,6 @@ Route::get('/todo',[TodoController::class, 'index'])->name('todo');
 
 // store data digunakan untuk menyimpan data
 Route::post('/todo',[TodoController::class, 'store'])->name('todo.post');
+
+// update data digunakan untuk mengupdate data
+Route::put('/todo/{id}',[TodoController::class, 'update'])->name('todo.update');
