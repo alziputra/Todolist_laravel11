@@ -19,3 +19,6 @@ Route::post('/todo',[TodoController::class, 'store'])->name('todo.post');
 
 // update data digunakan untuk mengupdate data
 Route::put('/todo/{id}',[TodoController::class, 'update'])->name('todo.update');
+
+// delete data digunakan untuk menghapus data
+Route::delete('/todo/{id}',[TodoController::class, 'destroy'])->name('todo.delete');

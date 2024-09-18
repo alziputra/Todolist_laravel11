@@ -10,7 +10,7 @@
 
 <body>
 
-  <!-- 00. Navbar -->
+  {{-- 00. Navbar --}}
   <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <a class="navbar-item" href="#">
@@ -20,17 +20,18 @@
   </nav>
 
   <div class="container mt-5">
-    <!-- 01. Content -->
+    {{-- 01. Content --}}
     <h1 class="title is-3">To Do List</h1>
 
     <div class="box">
-      <!-- 02. Form input data -->
+      {{-- Menampilkan pesan sukses jika ada --}}
       @if (session('success'))
-        <div class="notification is-success">
+        <div id="successMessage" class="notification is-success">
           {{ session('success') }}
         </div>
       @endif
 
+      {{-- Menampilkan pesan error jika ada --}}
       @if ($errors->any())
         <div class="notification is-danger">
           <ul>
@@ -41,6 +42,7 @@
         </div>
       @endif
 
+      {{-- 02. Form input data --}}
       <form id="todo-form" action="{{ route('todo.post') }}" method="post">
         @csrf
         <div class="field has-addons">
@@ -54,7 +56,7 @@
         </div>
       </form>
 
-      <!-- 03. Searching -->
+      {{-- 03. Searching --}}
       <form id="todo-form" action="" method="get" class="mt-4">
         <div class="field has-addons">
           <div class="control is-expanded">
@@ -67,7 +69,7 @@
       </form>
 
       <ul id="todo-list" class="mt-5">
-        <!-- 04. Display Data -->
+        {{-- 04. Display Data --}}
         @foreach ($datatabel as $item)
           <li class="mb-1 is-flex is-justify-content-space-between is-align-items-center">
             {{-- menampilkan status task --}}
@@ -77,13 +79,36 @@
             </span>
             <input type="text" class="input edit-input is-hidden" value="{{ $item->task }}">
             <div class="buttons">
-              <button class="button is-danger is-small">✕</button>
+              <form action="{{ route('todo.delete', ['id' => $item->id]) }}" method="POST" id="delete-form">
+                @csrf
+                @method('DELETE')
+                <button type="button"class="button is-danger is-small delete-button"
+                  data-index="{{ $loop->index }}">✕</button>
+              </form>
               <!-- $loop->index adalah variabel bawaan dari Blade yang menyediakan indeks dari elemen saat ini dalam loop. -->
               <button class="button is-warning is-small" onclick="toggleUpdateForm({{ $loop->index }})">✎</button>
             </div>
           </li>
 
-          <!-- 05. Update Data (Initially Hidden) -->
+          <!-- Modal -->
+          <div class="modal" id="delete-modal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+              <header class="modal-card-head">
+                <p class="modal-card-title">Konfirmasi Hapus</p>
+                <button class="delete" aria-label="close" id="close-modal"></button>
+              </header>
+              <section class="modal-card-body">
+                <p>Yakin akan menghapus data ini?</p>
+              </section>
+              <footer class="modal-card-foot">
+                <button class="button is-danger" id="confirm-delete">Ya</button>
+                <button class="button" id="cancel-delete">Batal</button>
+              </footer>
+            </div>
+          </div>
+
+          {{-- 05. Update Data (Initially Hidden) --}}
           <li class="box is-hidden" id="update-form-{{ $loop->index }}">
             <form action="{{ route('todo.update', ['id' => $item->id]) }}" method="POST">
               @csrf
@@ -118,6 +143,18 @@
       </ul>
 
       <script>
+        // Setelah 8 detik, sembunyikan pesan sukses dan refresh halaman
+        setTimeout(function() {
+          // Cek apakah elemen pesan sukses ada
+          var successMessage = document.getElementById('successMessage');
+          if (successMessage) {
+            // Sembunyikan pesan
+            successMessage.style.display = 'none';
+            // Refresh halaman setelah pesan sukses hilang
+            location.reload();
+          }
+        }, 5000); // 5000 milidetik = 5 detik
+
         function toggleUpdateForm(index) {
           // Mengakses elemen dengan id 'update-form-' yang diikuti oleh indeks dari loop Blade
           var updateForm = document.getElementById('update-form-' + index);
@@ -127,6 +164,39 @@
             updateForm.classList.add('is-hidden'); // Menyembunyikan form jika sebelumnya ditampilkan
           }
         }
+
+        // Ambil semua tombol delete
+        const deleteButtons = document.querySelectorAll('.delete-button');
+        const deleteModal = document.getElementById('delete-modal');
+        const closeModalButton = document.getElementById('close-modal');
+        const confirmDeleteButton = document.getElementById('confirm-delete');
+        const cancelDeleteButton = document.getElementById('cancel-delete');
+
+        let formToSubmit = null; // Untuk menyimpan form yang akan dihapus
+
+        // Fungsi untuk membuka modal saat tombol delete diklik
+        deleteButtons.forEach(function(button) {
+          button.addEventListener('click', function(event) {
+            formToSubmit = button.closest('form'); // Simpan form yang terkait dengan tombol delete
+            deleteModal.classList.add('is-active'); // Tampilkan modal
+          });
+        });
+
+        // Tutup modal saat tombol X atau "Batal" diklik
+        closeModalButton.addEventListener('click', function() {
+          deleteModal.classList.remove('is-active');
+        });
+
+        cancelDeleteButton.addEventListener('click', function() {
+          deleteModal.classList.remove('is-active');
+        });
+
+        // Lanjutkan proses penghapusan saat tombol "Ya" diklik
+        confirmDeleteButton.addEventListener('click', function() {
+          if (formToSubmit) {
+            formToSubmit.submit(); // Submit form yang disimpan di formToSubmit
+          }
+        });
       </script>
 
 </body>

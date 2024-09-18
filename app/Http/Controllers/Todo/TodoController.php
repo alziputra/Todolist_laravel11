@@ -53,6 +53,7 @@ class TodoController extends Controller
     Todo::create($data);
     // kembalikan ke halaman todo dengan pesan sukses
     return redirect()->route('todo')->with('success', 'Data berhasil ditambahkan');
+    
   }
 
   /**
@@ -102,6 +103,9 @@ class TodoController extends Controller
    */
   public function destroy(string $id)
   {
-    //
+    // panggil model Todo berdasarkan id
+    Todo::where('id', $id)->delete();
+    // kembalikan ke halaman todo dengan
+    return redirect()->route('todo')->with('success', 'Data berhasil dihapus');
   }
 }
