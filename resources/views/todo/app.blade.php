@@ -57,10 +57,11 @@
       </form>
 
       {{-- 03. Searching --}}
-      <form id="todo-form" action="" method="get" class="mt-4">
+      <form id="todo-form" action="{{ route('todo') }}" method="get" class="mt-4">
         <div class="field has-addons">
           <div class="control is-expanded">
-            <input class="input" type="text" name="search" value="" placeholder="Masukkan kata kunci">
+            <input class="input" type="text" name="search" value="{{ request('search') }}"
+              placeholder="Masukkan kata kunci">
           </div>
           <div class="control">
             <button type="submit" class="button is-info">Cari</button>

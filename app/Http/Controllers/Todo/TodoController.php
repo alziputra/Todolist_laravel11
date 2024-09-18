@@ -14,8 +14,12 @@ class TodoController extends Controller
    */
   public function index()
   {
-    // ambil data dari model Todo
-    $data = Todo::orderBy('task', 'asc')->get();
+    // search data
+    if (request()->has('search')) {
+      $data = Todo::where('task', 'like', '%' . request('search') . '%')->get();
+    } else {
+      $data = Todo::orderBy('task', 'asc')->get();
+    }
 
     // kirim data ke view todo.app
     return view('todo.app', ['datatabel' => $data]);
@@ -53,7 +57,6 @@ class TodoController extends Controller
     Todo::create($data);
     // kembalikan ke halaman todo dengan pesan sukses
     return redirect()->route('todo')->with('success', 'Data berhasil ditambahkan');
-    
   }
 
   /**
