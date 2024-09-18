@@ -14,11 +14,14 @@ class TodoController extends Controller
    */
   public function index()
   {
+    // set max data per page
+    $max_data = 4;
+
     // search data
     if (request()->has('search')) {
-      $data = Todo::where('task', 'like', '%' . request('search') . '%')->get();
+      $data = Todo::where('task', 'like', '%' . request('search') . '%')->paginate($max_data)->withQueryString();
     } else {
-      $data = Todo::orderBy('task', 'asc')->get();
+      $data = Todo::orderBy('task', 'asc')->paginate($max_data);
     }
 
     // kirim data ke view todo.app
