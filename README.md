@@ -1,3 +1,5 @@
+![alt text](https://github.com/alziputra/Todolist_laravel11/blob/main/public/screenshot.png?raw=true)
+
 # Todo Application with Laravel 11
 
 This is a simple Todo application built using Laravel 11. Follow the instructions below to set up the project on your local machine.
